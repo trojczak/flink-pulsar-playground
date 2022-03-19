@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>pl.trojczak.flinkpulsar.playground</groupId>
+  <artifactId>flink-pulsar-playground</artifactId>
+  <version>1.0-SNAPSHOT</version>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <target.java.version>11</target.java.version>
+    <maven.compiler.source>${target.java.version}</maven.compiler.source>
+    <maven.compiler.target>${target.java.version}</maven.compiler.target>
+
+    <main.class>pl.trojczak.flinkpulsar.playground.FlinkPulsarPlayground</main.class>
+    <maven-shade-plugin.version>3.1.0</maven-shade-plugin.version>
+
+    <scala.binary.version>2.12</scala.binary.version>
+    <flink.version>1.13.6</flink.version>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.flink</groupId>
+      <artifactId>flink-java</artifactId>
+      <version>${flink.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.flink</groupId>
+      <artifactId>flink-clients_${scala.binary.version}</artifactId>
+      <version>${flink.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.flink</groupId>
+      <artifactId>flink-table-api-java-bridge_${scala.binary.version}</artifactId>
+      <version>${flink.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.flink</groupId>
+      <artifactId>flink-table-planner-blink_${scala.binary.version}</artifactId>
+      <version>${flink.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.flink</groupId>
+      <artifactId>flink-streaming-java_${scala.binary.version}</artifactId>
+      <version>${flink.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.flink</groupId>
+      <artifactId>flink-csv</artifactId>
+      <version>${flink.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>io.streamnative.connectors</groupId>
+      <artifactId>pulsar-flink-connector_${scala.binary.version}</artifactId>
+      <version>1.13.1.4</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.2.2</version>
+        <configuration>
+          <archive>
+            <manifest>
+              <addClasspath>true</addClasspath>
+              <mainClass>pl.trojczak.flinkpulsar.playground.FlinkPulsarPlayground</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
+      </plugin>
+<!--      <plugin>-->
+<!--        &lt;!&ndash; Shade all the dependencies to avoid conflicts &ndash;&gt;-->
+<!--        <groupId>org.apache.maven.plugins</groupId>-->
+<!--        <artifactId>maven-shade-plugin</artifactId>-->
+<!--        <version>${maven-shade-plugin.version}</version>-->
+<!--        <executions>-->
+<!--          <execution>-->
+<!--            <phase>package</phase>-->
+<!--            <goals>-->
+<!--              <goal>shade</goal>-->
+<!--            </goals>-->
+<!--            <configuration>-->
+<!--              <createDependencyReducedPom>true</createDependencyReducedPom>-->
+<!--              <promoteTransitiveDependencies>true</promoteTransitiveDependencies>-->
+<!--              <minimizeJar>false</minimizeJar>-->
+<!--              <artifactSet>-->
+<!--                <includes>-->
+<!--                  <include>io.streamnative.connectors:*</include>-->
+<!--&lt;!&ndash;                  <include>*</include>&ndash;&gt;-->
+<!--                </includes>-->
+<!--              </artifactSet>-->
+<!--              <filters>-->
+<!--                <filter>-->
+<!--                  <artifact>*:*</artifact>-->
+<!--                  <excludes>-->
+<!--                    <exclude>META-INF/*.SF</exclude>-->
+<!--                    <exclude>META-INF/*.DSA</exclude>-->
+<!--                    <exclude>META-INF/*.RSA</exclude>-->
+<!--                  </excludes>-->
+<!--                </filter>-->
+<!--              </filters>-->
+<!--              <transformers>-->
+<!--                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />-->
+<!--                <transformer implementation="org.apache.maven.plugins.shade.resource.PluginXmlResourceTransformer" />-->
+<!--                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer" />-->
+<!--              </transformers>-->
+<!--            </configuration>-->
+<!--          </execution>-->
+<!--        </executions>-->
+<!--      </plugin>-->
+    </plugins>
+  </build>
+</project>
