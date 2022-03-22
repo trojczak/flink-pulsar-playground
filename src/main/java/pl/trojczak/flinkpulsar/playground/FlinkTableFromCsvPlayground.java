@@ -7,7 +7,7 @@ import org.apache.flink.table.api.EnvironmentSettings;
 import org.apache.flink.table.api.TableEnvironment;
 import org.apache.flink.table.api.TableResult;
 
-public class FlinkPlayground {
+public class FlinkTableFromCsvPlayground {
 
     public static void main(String[] args) throws IOException {
         EnvironmentSettings environmentSettings = EnvironmentSettings.newInstance()

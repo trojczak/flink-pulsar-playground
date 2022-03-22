@@ -6,6 +6,7 @@ import org.apache.flink.api.common.RuntimeExecutionMode;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.connectors.pulsar.FlinkPulsarSource;
+import org.apache.flink.streaming.connectors.pulsar.internal.AvroDeser;
 import org.apache.flink.streaming.util.serialization.PulsarDeserializationSchema;
 import org.apache.flink.table.api.TableEnvironment;
 import org.apache.flink.table.api.TableResult;
@@ -27,10 +28,11 @@ public class FlinkPulsarPlayground {
         properties.setProperty("topic", TOPIC_NAME);
         properties.setProperty("partition.discovery.interval-millis", PARTITION_DISCOVERY_INTERVAL);
 
+        PulsarDeserializationSchema<Document> deserializationSchema = PulsarDeserializationSchema.valueOnly(AvroDeser.of(Document.class));
         FlinkPulsarSource<Document> source = new FlinkPulsarSource<>(
                 SERVICE_URL,
                 ADMIN_URL,
-                getDeserializationSchema(),
+                deserializationSchema,
                 properties
         );
         source.setStartFromEarliest();
@@ -47,6 +49,7 @@ public class FlinkPulsarPlayground {
         System.out.println("test...");
     }
 
+    @Deprecated
     private static PulsarDeserializationSchema<Document> getDeserializationSchema() {
         return PulsarDeserializationSchema.valueOnly(new AvroDeserializationSchema<>(Document.class));
     }
